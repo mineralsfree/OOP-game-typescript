@@ -1,0 +1,8 @@
+import {Unit} from "../Unit/unit";
+import {Field} from "../Field/Field";
+
+export interface IGame {
+    fieldA: Field;
+    fieldB: Field;
+    nextMove():  void;
+}
