@@ -13,12 +13,14 @@ export const UnitConstants = {
         initiative: 12,
         type:'Archer',
         rangeY: 5,
-        rangeX: 5
+        rangeX: 5,
     },
-    AntiMage: {
+    Mage: {
         maxHP: 400,
         damage: 15,
         initiative: 8,
-        type: 'AntiMage'
+        type: 'Mage',
+        rangeY: 5,
+        rangeX: 5,
     }
 }

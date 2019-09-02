@@ -1,5 +1,5 @@
 import {IField} from "./IField";
-import {Unit} from "../Unit/unit";
+import {Unit} from "../Units/Unit/unit";
 import {fill} from "../helpers/fillUnitsHelper";
 import {sortByInitiativity} from "./sortHelper";
 

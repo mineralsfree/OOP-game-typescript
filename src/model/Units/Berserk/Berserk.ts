@@ -1,5 +1,5 @@
 import {Unit} from "../Unit/unit";
-import {UnitConstants} from "../Constants";
+import {UnitConstants} from "../../Constants";
 
 const berserk = UnitConstants.Berserk;
 export class Berserk extends Unit{

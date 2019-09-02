@@ -1,4 +1,4 @@
-import {Unit} from "../Unit/unit";
+import {Unit} from "../Units/Unit/unit";
 
 export interface IField {
     team: string;

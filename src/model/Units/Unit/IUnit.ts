@@ -2,5 +2,6 @@ export interface IUnit {
     maxHP: number,
     damage: number,
     initiative: number,
-    team: string
+    team: string,
+    [propName: string]: any;
 }

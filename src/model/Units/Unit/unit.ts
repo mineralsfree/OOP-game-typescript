@@ -7,6 +7,7 @@ export class Unit implements IUnit{
     HP: number;
     team: string;
     type: string;
+    // TODO: выпилить team из базового объекта, переименовать type =>warriorType
     constructor(maxHP: number,  damage: number, initiative: number,type: string, team: string ) {
         this.maxHP = maxHP;
         this.damage = damage;

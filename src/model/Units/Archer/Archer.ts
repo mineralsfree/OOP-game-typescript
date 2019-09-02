@@ -1,5 +1,5 @@
 import {Unit} from "../Unit/unit";
-import {UnitConstants} from '../Constants'
+import {UnitConstants} from '../../Constants'
 const archer = UnitConstants.Archer;
 export class Archer extends Unit{
     constructor(team: string) {

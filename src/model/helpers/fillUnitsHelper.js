@@ -1,11 +1,11 @@
-import {Berserk} from "../Berserk/Berserk";
-import {AntiMage} from "../AntiMage/AntiMage";
-import {Archer} from "../Archer/Archer"
+import {Berserk} from "../Units/Berserk/Berserk";
+import {Mage} from "../Units/Mage/Mage";
+import {Archer} from "../Units/Archer/Archer"
 import {FieldSizes} from "../Field/Constants";
 import {getRandomInt} from './RandomHelper';
 
 const warriors = {
-    1: AntiMage,
+    1: Mage,
     2: Archer,
     3: Berserk
 }
