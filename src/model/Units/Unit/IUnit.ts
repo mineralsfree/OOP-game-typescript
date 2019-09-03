@@ -3,5 +3,6 @@ export interface IUnit {
     damage: number,
     initiative: number,
     team: string,
+    id: number
     [propName: string]: any;
 }

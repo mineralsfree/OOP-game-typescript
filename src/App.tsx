@@ -7,14 +7,15 @@ import {FieldComponent} from "./components/Field/Field";
 
 const App: React.FC = () => {
     const game = new Game();
-    const fieldA = new Field('A', null);
-    const fieldB = new Field('B', null);
+
+    // const fieldA = new Field('A', null);
+    // const fieldB = new Field('B', null);
     return (
         <div className="App">
             <header className="App-header">
                 <img src={logo} className="App-logo" alt="logo"/>
-                <FieldComponent field={fieldA} reverse={true}/>
-                <FieldComponent field={fieldB}/>
+                <FieldComponent field={game.fieldA} reverse={true}/>
+                <FieldComponent field={game.fieldB}/>
                 <p>{JSON.stringify(game.order)}</p>
                 <p>
                     Edit <code>src/App.tsx</code> and save to reload.

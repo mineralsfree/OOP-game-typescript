@@ -1,7 +1,6 @@
 import {IGame} from "./IGame";
 import {Field} from "../Field/Field";
 import {Unit} from "../Units/Unit/unit";
-import {getOrderByInitiativity} from "./OrderHelper";
 
 export class Game implements IGame {
     get order(): Array<Unit> {
@@ -14,7 +13,7 @@ export class Game implements IGame {
         console.log(this.fieldA.getUnitsSortedByInitiative());
         console.log(this.fieldB.getUnitsSortedByInitiative());
 
-        this._order =getOrderByInitiativity(this.fieldA.getUnitsSortedByInitiative(), this.fieldB.getUnitsSortedByInitiative());
+        this._order =this.getOrderByInitiativity(this.fieldA.getUnitsSortedByInitiative(), this.fieldB.getUnitsSortedByInitiative());
     }
 
     fieldA: Field;
@@ -23,33 +22,33 @@ export class Game implements IGame {
     nextMove() {
 
     }
-    // private  getOrderByInitiativity (arr1: IUnit, arr2) {
-    //     let i = 0;
-    //     let j = 0;
-    //     let arr = [];
-    //     while (i < arr1.length && j < arr2.length) {
-    //         if (arr1[i].initiative > arr2[j].initiative) {
-    //             arr.push(arr1[i]);
-    //             i++;
-    //         } else if (arr1[i].initiative < arr2[j].initiative) {
-    //             arr.push(arr2[j]);
-    //             j++;
-    //         } else if (arr1[i].initiative === arr2[j].initiative && Math.random() < 0.5) {
-    //             arr.push(arr1[i]);
-    //             i++;
-    //         } else {
-    //             arr.push(arr2[j]);
-    //             j++;
-    //         }
-    //     }
-    //     while (i< arr1.length){
-    //         arr.push(arr1[i]);
-    //         i++
-    //     }
-    //     while (j< arr2.length){
-    //         arr.push(arr2[j]);
-    //         j++
-    //     }
-    //     return arr;
-    // }
+    private  getOrderByInitiativity (arr1: Array<Unit>, arr2: Array<Unit>): Array<Unit> {
+        let i = 0;
+        let j = 0;
+        let arr = [];
+        while (i < arr1.length && j < arr2.length) {
+            if (arr1[i].initiative > arr2[j].initiative) {
+                arr.push(arr1[i]);
+                i++;
+            } else if (arr1[i].initiative < arr2[j].initiative) {
+                arr.push(arr2[j]);
+                j++;
+            } else if (arr1[i].initiative === arr2[j].initiative && Math.random() < 0.5) {
+                arr.push(arr1[i]);
+                i++;
+            } else {
+                arr.push(arr2[j]);
+                j++;
+            }
+        }
+        while (i< arr1.length){
+            arr.push(arr1[i]);
+            i++
+        }
+        while (j< arr2.length){
+            arr.push(arr2[j]);
+            j++
+        }
+        return arr;
+    }
 }

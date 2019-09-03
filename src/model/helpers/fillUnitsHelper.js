@@ -9,15 +9,22 @@ const warriors = {
     2: Archer,
     3: Berserk
 }
-export const fill = (team)=>{
-    let row1 =[];
-    let row2 =[];
+export const fill = (team) => {
+    let row1 = [];
+    let row2 = [];
     let randomInt;
+    let warrior;
     for (let i = 0; i < FieldSizes.x; i++) {
-        randomInt = getRandomInt(1,3);
-        row1.push(new warriors[randomInt](team));
-        randomInt =getRandomInt(1,2);
-        row2.push(new warriors[randomInt](team));
+        randomInt = getRandomInt(1, 3);
+        warrior = new warriors[randomInt](team);
+        row1.push(warrior);
+        warrior.x = i;
+        warrior.y = 0;
+        randomInt = getRandomInt(1, 2);
+        warrior = new warriors[randomInt](team)
+        warrior.x = i;
+        warrior.y = 1   ;
+        row2.push(warrior);
     }
     return [row1, row2];
 
