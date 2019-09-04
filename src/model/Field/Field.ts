@@ -32,10 +32,8 @@ export class Field implements IField{
     resetValueOfUnit(field: string){
         this.field.forEach((el, i) => {
             el.forEach((elem, j) => {
-                if(elem.hasOwnProperty(field)){
                     // @ts-ignore
                     elem[field] = false;
-                }
             })
         });
     }

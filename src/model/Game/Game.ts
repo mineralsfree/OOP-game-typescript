@@ -58,11 +58,11 @@ export class Game implements IGame {
 
     public DisplayPossibleUnitsToAttack(unit: Unit): void {
         let field: Array<Array<Unit>>;
+        this.fieldB.resetValueOfUnit('attackable');
+        this.fieldA.resetValueOfUnit('attackable');
         if (unit.team === "A") {
-            this.fieldA.resetValueOfUnit('attackable');
             field = this.fieldB.field
         } else {
-            this.fieldB.resetValueOfUnit('attackable');
             field = this.fieldA.field
         }
         let arr: Array<ICoordinates>;

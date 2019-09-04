@@ -2,7 +2,7 @@ export const UnitConstants = {
     Berserk: {
         maxHP: 500,
         damage: 100,
-        initiative: 10,
+        initiative: 9,
         type:'Berserk',
         rangeX: 1,
         rangeY: 0

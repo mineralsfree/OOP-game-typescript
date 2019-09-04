@@ -24,7 +24,6 @@ export class App extends Component {
                 );
             }
             this.DisplayPossibleUnitsToAttack();
-            this.update();
         } else {
             alert('чел ты...')
         }

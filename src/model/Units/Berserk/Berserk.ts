@@ -19,7 +19,6 @@ export class Berserk extends Unit{
             return 0;
         }
         let aliveLine = getAliveLine();
-        console.log(aliveLine);
         const field={
             x: enemyField[0].length,
             y: enemyField.length
