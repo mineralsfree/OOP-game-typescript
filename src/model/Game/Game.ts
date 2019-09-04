@@ -16,8 +16,8 @@ export class Game implements IGame {
     fieldA: Field;
     fieldB: Field;
     getNextAttackingWarior(): Unit | undefined {
-        this.resetAttribute('active', this.fieldB)
-        this.resetAttribute('active', this.fieldA)
+        this.resetAttribute('active', this.fieldB);
+        this.resetAttribute('active', this.fieldA);
             let warrior = this.order.shift();
             if (warrior) {
                 warrior.active = true;
@@ -91,16 +91,15 @@ export class Game implements IGame {
             if (y === 0){
                 console.log(x)
                 console.log(field)
-                if (x===0 && !field[x][0].dead){
+                if (x===0 && !field[0][x].dead){
                     return [{x: 0, y:0},{x: 1, y:0} ]
-                } else if( x===FieldSizes.x-1 && !field[x][0].dead) {
+                } else if( x===FieldSizes.x-1 && !field[0][x].dead) {
                     return [{x: FieldSizes.x - 1, y: 0}, {x: FieldSizes.x - 2, y: 0}]
                 }
                 else {
+                    // TODO: fix bug
                     for (let i = 0; i < FieldSizes.x; i++) {
-                        console.log(field[i]);
-                        console.log(field);
-                        if (!field[i][0].dead){
+                        if (!field[0][i].dead){
                             arr.push({x:i,y:0})
                         }
                     }

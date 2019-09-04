@@ -15,9 +15,9 @@ export class App extends Component{
            game: this.state.game
         }
         )
-    }
+    };
+
     render(){
-        console.log(this.state.game.order);
         return (
             <div className="App" >
                 <header className="App-header">

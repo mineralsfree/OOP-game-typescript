@@ -17,7 +17,8 @@ export class FieldComponent extends Component<IFieldComponentProps, any>{
         const { reverse, game } = this.props;
         let lField;
         if (this.props.reverse){
-            lField = field.reverse();
+            lField =  field.slice().reverse();
+
         } else {
             lField = field;
         }
