@@ -3,9 +3,12 @@
   background-image: url("img/Berserk.png")
   background-size: contain
 .cell-container
+  position: relative
   height: 100px
   width: 100px
   font-size: 16px
+  border-left: 6px solid #282c34
+
 .cell-mage
   background-color: blue
   background-image: url("img/Mage.png")
@@ -16,5 +19,16 @@
   background-size: contain
 .cell-attackable
   background-color: red
+  cursor: pointer
 .cell-active
   background-color: greenyellow
+.cell-dead
+  background-image: none
+  background-color: blue
+.cell-health
+  height: 10px
+  position: absolute
+  background-color: green
+  z-index: 100
+  bottom: 0
+  left: 0

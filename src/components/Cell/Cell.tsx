@@ -1,13 +1,10 @@
 import React, {Component} from 'react';
 import {cn} from "@bem-react/classname";
 import './Cell.sass'
-import {Game} from "../../model/Game/Game";
 import {Unit} from "../../model/Units/Unit/unit";
 
 export interface ICellComponentProps {
     warrior:  Unit,
-    game: Game
-
 }
 
 const cellCN = cn('cell');
@@ -21,13 +18,13 @@ export class Cell extends Component<ICellComponentProps, any> {
             cellCN(warrior.type.toLowerCase()),
             cellCN('container'),
             warrior.active? cellCN( 'active'): '',
-            warrior.attackable? cellCN('attackable'): ''
+            warrior.attackable? cellCN('attackable'): '',
+            warrior.dead? cellCN('dead'): ''
         ]
         return (
             <div className={className.join(' ')}>
-                {/*{'X: ' + warrior.x + ' Y: ' + warrior.y }*/}
-                {/*{'Team: ' + warrior.team }*/}
-                {/*{warrior.attackable ? "A" : "B"}*/}
+                {warrior.id}
+                {!warrior.dead ?                 <span  className={cellCN('health')} style={{width: `${warrior.HP/warrior.maxHP*100}%`}}/> : ''}
             </div>)
     }
 }

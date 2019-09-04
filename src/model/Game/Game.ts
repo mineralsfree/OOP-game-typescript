@@ -1,136 +1,76 @@
 import {IGame} from "./IGame";
 import {Field, ICoordinates} from "../Field/Field";
 import {Unit} from "../Units/Unit/unit";
-import {FieldSizes} from "../Field/Constants";
+import {sortByInitiativity} from './sortHelper';
 
 export class Game implements IGame {
-    get order(): Array<Unit> {
-        return this._order;
-    }
-    private readonly _order: Array<Unit>;
-    constructor(){
-        this.fieldA = new Field('A', null);
-        this.fieldB = new Field("B", null);
-        this._order =this.getOrderByInitiativity(this.fieldA.getUnitsSortedByInitiative(), this.fieldB.getUnitsSortedByInitiative());
-    }
+    order: Array<Unit>;
+    round: number;
+    activeUnit: Unit;
     fieldA: Field;
     fieldB: Field;
-    getNextAttackingWarior(): Unit | undefined {
-        this.resetAttribute('active', this.fieldB);
-        this.resetAttribute('active', this.fieldA);
-            let warrior = this.order.shift();
-            if (warrior) {
-                warrior.active = true;
-            }
 
+    constructor() {
+        this.fieldA = new Field('A', null);
+        this.fieldB = new Field("B", null);
+        this.order = (this.fieldA.flatArr.concat(this.fieldB.flatArr)).sort(sortByInitiativity);
+        this.activeUnit = this.order[0];
+        this.round = 1;
+    }
+
+    getNextAttackingWarior(): Unit {
+        this.fieldA.resetValueOfUnit('active');
+        this.fieldB.resetValueOfUnit('active');
+        let warrior = this.order.shift();
+        while (warrior && warrior.dead) {
+            warrior = this.order.shift();
+        }
+        if (warrior) {
+            warrior.active = true;
+            this.activeUnit = warrior;
+        } else {
+            this.nextRound();
+            return this.getNextAttackingWarior();
+        }
         return warrior;
     };
 
-
-    private  getOrderByInitiativity (arr1: Array<Unit>, arr2: Array<Unit>): Array<Unit> {
-        let i = 0;
-        let j = 0;
-        let arr = [];
-        while (i < arr1.length && j < arr2.length) {
-            if (arr1[i].initiative > arr2[j].initiative) {
-                arr.push(arr1[i]);
-                i++;
-            } else if (arr1[i].initiative < arr2[j].initiative) {
-                arr.push(arr2[j]);
-                j++;
-            } else if (arr1[i].initiative === arr2[j].initiative && Math.random() < 0.5) {
-                arr.push(arr1[i]);
-                i++;
-            } else {
-                arr.push(arr2[j]);
-                j++;
-            }
-        }
-        while (i< arr1.length){
-            arr.push(arr1[i]);
-            i++
-        }
-        while (j< arr2.length){
-            arr.push(arr2[j]);
-            j++
-        }
-        return arr;
+    private nextRound() {
+        this.order = (this.fieldA.flatArr.concat(this.fieldB.flatArr)).sort(sortByInitiativity);
+        this.round++;
     }
-    private resetAttribute(attribute: string, team: Field ){
-        team.field.forEach((el, i)=>{
-            el.forEach((elem, j)=>{
-                // @ts-ignore
-                elem[attribute] = false;
 
-            })
-        });
+    public gameOver() {
+        return (!(this.fieldB.teamAlive()) || !(this.fieldA.teamAlive()))
     }
-    DisplayPossibleUnitsToAttack(unit: Unit| undefined) : void{
-        if (!unit){
-            return;
+
+    public dealDamage(targetID: number) {
+        let sourceUnit = this.activeUnit;
+        let targetField = sourceUnit.team === "A" ? this.fieldB : this.fieldA;
+        let target = targetField.getUnitByID(targetID);
+        if (target && !target.dead && target.attackable) {
+            sourceUnit.dealDamage(target, targetField)
+        } else {
+            return 0;
         }
+        return 1;
+    }
+
+    public DisplayPossibleUnitsToAttack(unit: Unit): void {
         let field: Array<Array<Unit>>;
-        if (unit.team === "A"){
+        if (unit.team === "A") {
+            this.fieldA.resetValueOfUnit('attackable');
             field = this.fieldB.field
         } else {
+            this.fieldB.resetValueOfUnit('attackable');
             field = this.fieldA.field
         }
-        const getAllCoordinates = (filter = null):  Array<ICoordinates>=>{
-            let arr: Array<ICoordinates> =[];
-            field.forEach((el, i)=>{
-                el.forEach((elem, j)=>{
-                    if (!elem.dead){
-                        arr.push({ x: elem.x, y: elem.y});
-                    }
-                })
-            });
-            return arr;
-        };
-        const getMeleeCoordinates = (x: number, y: number): Array<ICoordinates>=>{
-            let arr: Array<ICoordinates> = [];
-            if (y === 0){
-                console.log(x)
-                console.log(field)
-                if (x===0 && !field[0][x].dead){
-                    return [{x: 0, y:0},{x: 1, y:0} ]
-                } else if( x===FieldSizes.x-1 && !field[0][x].dead) {
-                    return [{x: FieldSizes.x - 1, y: 0}, {x: FieldSizes.x - 2, y: 0}]
-                }
-                else {
-                    // TODO: fix bug
-                    for (let i = 0; i < FieldSizes.x; i++) {
-                        if (!field[0][i].dead){
-                            arr.push({x:i,y:0})
-                        }
-                    }
-                }
-                return arr;
+        let arr: Array<ICoordinates>;
+        arr = unit.getAttackCoordinates(field);
+        arr.forEach((el) => {
+            if (!field[el.y][el.x].dead) {
+                field[el.y][el.x].attackable = true;
             }
-            return arr;
-
-        }
-        let arr:  Array<ICoordinates> = [];
-        switch (unit.type) {
-            case'Mage':{
-                arr =  getAllCoordinates();
-                break;
-            }
-            case'Archer' :{
-                arr = getAllCoordinates();
-                break;
-            }
-            case'Berserk':{
-                arr = getMeleeCoordinates(unit.x, unit.y);
-                break;
-            }
-
-        }
-        this.resetAttribute('attackable',this.fieldA );
-        this.resetAttribute('attackable',this.fieldB );
-
-        arr.forEach((el)=>{
-            field[el.y][el.x].attackable = true;
         });
-
     }
 }

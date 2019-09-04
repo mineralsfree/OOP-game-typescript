@@ -2,34 +2,59 @@ import React, {Component} from 'react';
 import './App.css';
 import {Game} from "./model/Game/Game";
 import {FieldComponent} from "./components/Field/Field";
-import {HealthDashboard} from "./components/HealthDashboard/HealthDashboard";
+import {ActiveStack} from "./components/ActivityStack/ActiveStack";
 
-export class App extends Component{
+export class App extends Component {
     state = {
-        game: new Game()
+        game: new Game(),
+        gameOver: false,
     };
-    handleClick = () =>{
+    DisplayPossibleUnitsToAttack = () => {
         this.state.game.DisplayPossibleUnitsToAttack(this.state.game.getNextAttackingWarior());
+        this.update();
+    };
+    handleAttackClick = (id: number) => {
+        const game = this.state.game;
+        if (game.dealDamage(id)) {
+            if (game.gameOver()) {
+                this.setState({
+                        ...this.state,
+                        gameOver: !this.state.gameOver
+                    }
+                );
+            }
+            this.DisplayPossibleUnitsToAttack();
+            this.update();
+        } else {
+            alert('чел ты...')
+        }
+    };
+    update = () => {
         this.setState({
                 ...this.state,
-           game: this.state.game
-        }
+                game: this.state.game
+            }
         )
-    };
+    }
 
-    render(){
+    componentDidMount(): void {
+        this.DisplayPossibleUnitsToAttack();
+
+    }
+
+    render() {
         return (
-            <div className="App" >
+            <div className="App">
                 <header className="App-header">
+                    {this.state.gameOver ? "GAME OVER, PRESS F5 To PLAY AGAIN" : `Round : ${this.state.game.round}`}
+                    <ActiveStack stack={this.state.game.order}/>
                     <div>
-                        <FieldComponent  game={this.state.game} field={this.state.game.fieldA} reverse={true}/>
-                        <FieldComponent  game={this.state.game} field={this.state.game.fieldB}/>
+                        TEAM A
+                        <FieldComponent attack={this.handleAttackClick} field={this.state.game.fieldA} reverse={true}/>
+                        <FieldComponent attack={this.handleAttackClick} field={this.state.game.fieldB}/>
+                        TEAM B
                     </div>
-                    <HealthDashboard game={this.state.game} fieldA={this.state.game.fieldA} fieldB={this.state.game.fieldB} />
-                    <button onClick={()=>{this.handleClick()}}>NEXT</button>
                 </header>
-                {/*{<p>{JSON.stringify(this.state.game.order)}</p>}*/}
-
             </div>
         );
     }
