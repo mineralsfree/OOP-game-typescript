@@ -3,24 +3,29 @@ export const UnitConstants = {
         maxHP: 500,
         damage: 100,
         initiative: 9,
-        type:'Berserk',
-        rangeX: 1,
-        rangeY: 0
+        type:'melee',
+        name: 'Berserk',
     },
     Archer: {
         maxHP: 350,
         damage: 75,
         initiative: 12,
-        type:'Archer',
-        rangeY: 5,
-        rangeX: 5,
+        name: 'Archer',
+        type:'range',
     },
     Mage: {
         maxHP: 400,
         damage: 15,
         initiative: 8,
+        name: 'Mage',
         type: 'Mage',
-        rangeY: 5,
-        rangeX: 5,
+    },
+    WitchDoctor: {
+        maxHP: 300,
+        damage: 75,
+        name: 'WitchDoctor',
+        initiative: 10,
+        type: 'healer',
+
     }
-}
+};

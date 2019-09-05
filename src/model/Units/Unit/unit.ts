@@ -1,28 +1,13 @@
 import {IUnit} from "./IUnit";
 import {Field, ICoordinates} from "../../Field/Field";
+import {IActionBehavior, IActionPossibility} from "../Behavior/ActionBehavior";
 
-export class Unit implements IUnit {
-    get y(): number {
-        return this._y;
-    }
-
-    set y(value: number) {
-        this._y = value;
-    }
-
-    get x(): number {
-        return this._x;
-    }
-
-    set x(value: number) {
-        this._x = value;
-    }
-
+export abstract class Unit implements IUnit {
     set HP(value: number) {
         if (value < 0) {
             this.dead = true;
         }
-        this._HP = value
+        this._HP = Math.min(value, this.maxHP);
     }
 
     get HP() {
@@ -38,13 +23,14 @@ export class Unit implements IUnit {
     dead: boolean;
     type: string;
     active: boolean;
-    private _x: number;
-    private _y: number;
+    x: number;
+    y: number;
     id: number;
-    static i = 0;
 
-    // TODO: выпилить team из базового объекта, переименовать type =>warriorType
-    constructor(maxHP: number, damage: number, initiative: number, type: string, team: string) {
+    static i = 0;
+    name: string;
+
+    protected constructor(maxHP: number, damage: number, initiative: number, type: string, team: string, name: string) {
         this.maxHP = maxHP;
         this.damage = damage;
         this.initiative = initiative;
@@ -52,20 +38,21 @@ export class Unit implements IUnit {
         this.team = team;
         this.type = type;
         this.id = Unit.getID();
-        this._x = 0;
-        this._y = 0;
+        this.x = 0;
+        this.y = 0;
         this.active = false;
         this.dead = false;
         this.attackable = false;
+        this.name = name;
     }
 
     static getID(): number {
         return Unit.i++;
     }
 
-    getAttackCoordinates(enemyField: Array<Array<Unit>>): Array<ICoordinates> {
+    getAttackCoordinates(field: Array<Array<Unit>>): Array<ICoordinates> {
         let arr: Array<ICoordinates> = [];
-        enemyField.forEach((el, i) => {
+        field.forEach((el, i) => {
             el.forEach((elem, j) => {
                 if (!elem.dead) {
                     arr.push({x: elem.x, y: elem.y});
@@ -74,7 +61,12 @@ export class Unit implements IUnit {
         });
         return arr;
     }
-    dealDamage(target:Unit, field?:Field){
-            target.HP-=this.damage;
+
+    dealDamage(target: Unit, field?: Field) {
+        target.HP -= this.damage;
     }
+
+   abstract  actionBehavior: IActionBehavior;
+    abstract attackPossibility: IActionPossibility;
 }
+

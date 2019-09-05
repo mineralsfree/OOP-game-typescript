@@ -15,7 +15,7 @@ export class Cell extends Component<ICellComponentProps, any> {
     render(): React.ReactElement<any, string | React.JSXElementConstructor<any>> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
         const warrior = this.props.warrior;
         const className = [
-            cellCN(warrior.type.toLowerCase()),
+            cellCN(warrior.name.toLowerCase()),
             cellCN('container'),
             warrior.active? cellCN( 'active'): '',
             warrior.attackable? cellCN('attackable'): '',
