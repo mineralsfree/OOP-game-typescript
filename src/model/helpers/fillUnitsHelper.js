@@ -4,12 +4,14 @@ import {Archer} from "../Units/Archer/Archer"
 import {FieldSizes} from "../Field/Constants";
 import {getRandomInt} from './RandomHelper';
 import {WitchDoctor} from "../Units/WitchDoctor/Healer";
+import {Hexer} from "../Units/Hexer/Hexer";
 
 const warriors = {
     1: Mage,
     2: Archer,
     3: WitchDoctor,
-    4: Berserk,
+    4: Hexer,
+    5: Berserk,
 }
 export const fill = (team) => {
     let row1 = [];

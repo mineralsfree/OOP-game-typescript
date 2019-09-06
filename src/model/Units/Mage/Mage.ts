@@ -26,5 +26,3 @@ export class Mage extends Unit {
     attackPossibility: IActionPossibility;
     actionBehavior: IActionBehavior;
 }
-
-// TODO: заюзать паттерн стратегия

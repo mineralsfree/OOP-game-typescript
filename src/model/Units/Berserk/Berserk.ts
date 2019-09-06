@@ -11,7 +11,7 @@ import {
 const berserk = UnitConstants.Berserk;
 export class Berserk extends Unit{
     constructor(team:string ){
-        super(berserk.maxHP, berserk.damage, berserk.initiative, berserk.type, team, berserk.name)
+        super(berserk.maxHP, berserk.damage, berserk.initiative, berserk.type, team, berserk.name);
         this.attackPossibility= new MeleePossibility();
         this.actionBehavior = new SingleUnitAttackBehavior();
     }
@@ -38,7 +38,6 @@ export class Berserk extends Unit{
             } else if (this.x === fieldSize.x - 1 && !field[aliveLine][this.x].dead) {
                 return [{x: fieldSize.x - 1, y: aliveLine}, {x: fieldSize.x - 2, y: aliveLine}]
             } else {
-                // TODO: fix bug
                 for (let i = 0; i < fieldSize.x; i++) {
                     if (!field[aliveLine][i].dead) {
                         arr.push({x: i, y: aliveLine})

@@ -26,7 +26,7 @@ export abstract class Unit implements IUnit {
     x: number;
     y: number;
     id: number;
-
+    hexed: boolean;
     static i = 0;
     name: string;
 
@@ -44,6 +44,7 @@ export abstract class Unit implements IUnit {
         this.dead = false;
         this.attackable = false;
         this.name = name;
+        this.hexed = false;
     }
 
     static getID(): number {

@@ -2,7 +2,12 @@ import {IGame} from "./IGame";
 import {Field} from "../Field/Field";
 import {Unit} from "../Units/Unit/unit";
 import {sortByInitiativity} from './sortHelper';
-import {AllUnitsAttackBehavior, HealBehavior, SingleUnitAttackBehavior} from "../Units/Behavior/ActionBehavior";
+import {
+    AllUnitsAttackBehavior,
+    HealBehavior,
+    hexerBehavior,
+    SingleUnitAttackBehavior
+} from "../Units/Behavior/ActionBehavior";
 
 export class Game implements IGame {
     order: Array<Unit>;
@@ -37,7 +42,9 @@ export class Game implements IGame {
     };
 
     private nextRound() {
-        this.order = (this.fieldA.flatArr.concat(this.fieldB.flatArr)).sort(sortByInitiativity);
+        this.order = (this.fieldA.flatArr.concat(this.fieldB.flatArr)).sort(sortByInitiativity).filter((el)=> {
+            return el.hexed ? el.hexed = !el.hexed : true;
+        });
         this.round++;
     }
 
@@ -47,30 +54,27 @@ export class Game implements IGame {
 
     public dealDamage(targetID: number) {
         let sourceUnit = this.activeUnit;
-        const [ allieField , enemyField] = this.getFieldToAttack(sourceUnit)
-        let target = sourceUnit.attackPossibility.getActionTargets(allieField,enemyField, sourceUnit);
-        if (target && !target.dead && target.attackable) {
-            if (sourceUnit.actionBehavior instanceof HealBehavior) {
-                sourceUnit.actionBehavior.heal(target, sourceUnit);
-            } else if (sourceUnit.actionBehavior instanceof AllUnitsAttackBehavior || sourceUnit.actionBehavior instanceof SingleUnitAttackBehavior) {
-                sourceUnit.actionBehavior.dealDamage(targetField.flatArr, target, sourceUnit);
-            }
-            // sourceUnit.dealDamage(target, targetField)
-        } else {
+        const [enemyField, allieField  ] = this.getFieldToAttack(sourceUnit);
+        let target = sourceUnit.attackPossibility.getActionTargets(enemyField.field, allieField.field, sourceUnit).filter(el=>el.id === targetID)[0];
+
+        if (!target || target.dead || !target.attackable) {
             return 0;
         }
+
+        if (sourceUnit.actionBehavior instanceof HealBehavior) {
+            sourceUnit.actionBehavior.heal(target, sourceUnit);
+        } else if (sourceUnit.actionBehavior instanceof AllUnitsAttackBehavior || sourceUnit.actionBehavior instanceof SingleUnitAttackBehavior) {
+            sourceUnit.actionBehavior.dealDamage(enemyField.flatArr, target, sourceUnit);
+        } else if(sourceUnit.actionBehavior instanceof hexerBehavior ){
+            sourceUnit.actionBehavior.hex(target);
+
+        }
+
         return 1;
     }
-
-    private getFieldToAttack(unit: Unit): Array<Array<Array<Unit>>> {
-
-        if (unit.team === "A") {
-            return [this.fieldB.field, this.fieldA.field]
-        } else {
-            return [this.fieldA.field, this.fieldB.field]
-        }
+    private getFieldToAttack(unit: Unit): Field[] {
+            return unit.team === "A" ?  [this.fieldB, this.fieldA] : [this.fieldA, this.fieldB]
     }
-
     public DisplayPossibleUnitsToAttack(unit: Unit): void {
         this.fieldB.resetValueOfUnit('attackable');
         this.fieldA.resetValueOfUnit('attackable');

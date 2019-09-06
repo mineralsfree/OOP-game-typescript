@@ -21,8 +21,13 @@
   background-color: #6b00a8
   background-image: url("img/Archor.png")
   background-size: contain
+.cell-hexer
+  background-color: #6b00a8
+  background-image: url("img/Hexer.png")
+  background-size: contain
 .cell-attackable
   background-color: #a81700
+  border-radius: 50px
   cursor: pointer
 .cell-active
   background-color: #00a86b
@@ -36,3 +41,10 @@
   z-index: 100
   bottom: 0
   left: 0
+.cell-hexed::after
+  content: ""
+  position: absolute
+  width: 50px
+  height: 40px
+  background-image: url("img/Silence.png")
+  background-size: contain

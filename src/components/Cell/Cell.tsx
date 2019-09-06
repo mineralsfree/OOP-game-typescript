@@ -19,7 +19,9 @@ export class Cell extends Component<ICellComponentProps, any> {
             cellCN('container'),
             warrior.active? cellCN( 'active'): '',
             warrior.attackable? cellCN('attackable'): '',
-            warrior.dead? cellCN('dead'): ''
+            warrior.dead? cellCN('dead'): '',
+            warrior.hexed? cellCN('hexed'): ''
+
         ]
         return (
             <div className={className.join(' ')}>

@@ -1,12 +1,21 @@
 import {Unit} from "../Unit/unit";
+import {WitchDoctor} from "../WitchDoctor/Healer";
 
 export interface IActionPossibility {
     getActionTargets(enemyField: Array<Array<Unit>>, AllieField: Array<Array<Unit>>, self: Unit): Array<Unit>
 }
-export interface  IActionBehavior{
-    dealDamage?(enemyField: Array<Unit>, target: Unit, source: Unit): void;
-    heal?(target: Unit, source: Unit): void;
 
+export interface IActionBehavior {
+    getActionBehaviorType(): string;
+}
+
+export class hexerBehavior implements IActionBehavior{
+    getActionBehaviorType(): string {
+        return "Hex";
+    }
+    hex(target: Unit): void{
+        target.hexed = true;
+    }
 }
 
 
@@ -15,11 +24,17 @@ export class SingleUnitAttackBehavior implements IActionBehavior {
         target.HP -= source.damage;
     }
 
+    getActionBehaviorType(): string {
+        return "Attack";
+    }
 }
 
 export class AllUnitsAttackBehavior implements IActionBehavior {
     dealDamage(enemyField: Array<Unit>, target: Unit, source: Unit): void {
         enemyField.forEach((el) => el.HP -= source.damage)
+    }
+    getActionBehaviorType(): string {
+        return "Attack";
     }
 }
 
@@ -27,18 +42,20 @@ export class HealBehavior implements IActionBehavior {
     heal(target: Unit, source: Unit): void {
         target.HP += source.damage;
     }
+
+    getActionBehaviorType(): string {
+        return "Heal";
+    }
 }
 
 export class RangePossibility implements IActionPossibility {
     getActionTargets(enemyField: Array<Array<Unit>>, AllieField: Array<Array<Unit>>, self: Unit): Array<Unit> {
         let field;
-        console.log(self);
-        if (self.type === 'healer') {
+        if (self instanceof WitchDoctor) {
             field = AllieField;
         } else {
             field = enemyField;
         }
-        console.log(field);
 
         let arr: Array<Unit> = [];
         field.forEach((el, i) => {
@@ -48,7 +65,6 @@ export class RangePossibility implements IActionPossibility {
                 }
             })
         });
-        console.log(arr);
         return arr;
     }
 }
