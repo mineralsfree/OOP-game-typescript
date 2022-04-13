@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/OOP-game-typescript/static/css/main.d61ab80c.chunk.css",
+    "main.js": "/OOP-game-typescript/static/js/main.7d9742c6.chunk.js",
+    "main.js.map": "/OOP-game-typescript/static/js/main.7d9742c6.chunk.js.map",
+    "runtime~main.js": "/OOP-game-typescript/static/js/runtime~main.3edffa7d.js",
+    "runtime~main.js.map": "/OOP-game-typescript/static/js/runtime~main.3edffa7d.js.map",
+    "static/js/2.1ed504dc.chunk.js": "/OOP-game-typescript/static/js/2.1ed504dc.chunk.js",
+    "static/js/2.1ed504dc.chunk.js.map": "/OOP-game-typescript/static/js/2.1ed504dc.chunk.js.map",
+    "index.html": "/OOP-game-typescript/index.html",
+    "precache-manifest.546d2dbd7c91b70a343d447eb3caeb44.js": "/OOP-game-typescript/precache-manifest.546d2dbd7c91b70a343d447eb3caeb44.js",
+    "service-worker.js": "/OOP-game-typescript/service-worker.js",
+    "static/css/main.d61ab80c.chunk.css.map": "/OOP-game-typescript/static/css/main.d61ab80c.chunk.css.map",
+    "static/media/Cell.sass": "/OOP-game-typescript/static/media/WitchDoctor.7249fcd7.png"
+  }
+}
